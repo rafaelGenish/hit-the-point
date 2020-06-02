@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hit the point</title>
+
+    <style>
+        canvas {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas width="600" height="600"></canvas>
+    <audio src="sounds/boom.mp3" hidden preload="auto"></audio>
+
+    <script>
+        let canvas = document.querySelector('canvas');
+        let boom = document.querySelector('audio');
+        let ctx = canvas.getContext('2d');
+        let radius = 10;
+        let diameter = radius * 2;
+        let widthOfBoard = canvas.width / diameter;
+        let heightOfBoard = canvas.height / diameter;
+        let hiddenPoint = setPoint();
+        let circle = { x: radius, y: radius, r: radius };
+        let counter = 0;
+
+        draw(circle);
+
+        document.onkeydown = function (e) {
+            draw(circle, 'white')
+
+            switch (e.key) {
+                case "ArrowUp":
+                    circle.y -= diameter
+                    if (borderHit(circle.y) < 0) {
+                        circle.y += diameter;
+                    }
+                    break;
+                case "ArrowDown":
+                    circle.y += diameter;
+                    if (borderHit(circle.y) > (heightOfBoard -1)) {
+                        circle.y -= diameter;
+                    }
+                    break;
+                case "ArrowLeft":
+                    circle.x -= diameter;
+                    if (borderHit(circle.x) < 0) {
+                        circle.x += diameter;
+                    }
+                    break;
+                case "ArrowRight":
+                    circle.x += diameter;
+                    if (borderHit(circle.x) > widthOfBoard -1) {
+                        circle.x -= diameter;
+                    }
+                    break;
+                default:
+                    break;
+            }
+            draw(circle)
+            if (hit()) {
+                draw(circle, 'red')
+                hiddenPoint = setPoint()
+                // if (counter > 3) {
+                //     alert("You win!!!")
+                //     return false
+                // }
+
+        }
+        }
+
+
+        function draw({ x, y, r }, color = 'black') {
+           r = color === 'white' ? r + 1 : r;
+
+            ctx.beginPath();
+            ctx.fillStyle = color;
+            ctx.arc(x, y, r, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.closePath();
+
+            
+        }
+
+        function borderHit(position) {
+            return (position - radius) / diameter;
+        }
+
+        function setPoint() {
+            let x = (Math.random() * widthOfBoard) | 0;
+            let y = (Math.random() * heightOfBoard) | 0;
+            let hiddenArc = {x: x * diameter + radius, y: y * diameter + radius}
+            draw({...hiddenArc, r: radius}, 'yellow')
+            return hiddenArc
+           
+        }
+
+        function shoot() {
+            setTimeout(function () {
+                boom.currentTime = 0;
+                boom.play();
+                draw(circle)
+
+            }, 200)
+        }
+
+        function hit() {
+            if (circle.x === hiddenPoint.x && circle.y === hiddenPoint.y) {
+                shoot();
+                counter++
+                console.log(counter)
+                return true;
+               
+            }
+        }
+
+
+
+    </script>
+</body>
+
+</html>
