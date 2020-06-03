@@ -8,21 +8,51 @@ let d = document.querySelector('#d');
 let e = document.querySelector('#e');
 
 
-a.addEventListener('click', function() {
-    x = 0
+a.addEventListener('click', function () {
+    selectMyChoice(0)
+    //x = 0
 });
 b.addEventListener('click', function() {
-    x = 1
+    selectMyChoice(1)
+    //x = 1
 });
 c.addEventListener('click', function() {
-    x = 2
+    selectMyChoice(2)
+    //x = 2
 });
 d.addEventListener('click', function() {
-    x = 3
+    selectMyChoice(3)
+    //x = 3
 });
 e.addEventListener('click', function() {
-    x = 4
+    selectMyChoice(4)
+    //x = 4
 });
+
+
+function selectMyChoice(x) {
+    
+    switch (x) {
+        case 0:
+            console.log('abba');
+            break;
+        case 1:
+            console.log('guns and roses');
+            break;
+        case 2:
+            console.log('led zepplin');
+            break;
+        case 3:
+            console.log('queen');
+            break;
+        case 4:
+            console.log('beatles');
+            break;
+    }
+  
+}
+
+
 
 switch (x) {
     case 0:
@@ -41,4 +71,3 @@ switch (x) {
         console.log('beatles');
         break;
 }
-
